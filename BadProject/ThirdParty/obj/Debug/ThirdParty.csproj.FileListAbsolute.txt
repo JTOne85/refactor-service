@@ -1,6 +1,0 @@
-C:\Users\JacquesTerblanche\Downloads\BadProject\ThirdParty\bin\Debug\ThirdParty.dll
-C:\Users\JacquesTerblanche\Downloads\BadProject\ThirdParty\bin\Debug\ThirdParty.pdb
-C:\Users\JacquesTerblanche\Downloads\BadProject\ThirdParty\obj\Debug\ThirdParty.csproj.AssemblyReference.cache
-C:\Users\JacquesTerblanche\Downloads\BadProject\ThirdParty\obj\Debug\ThirdParty.csproj.CoreCompileInputs.cache
-C:\Users\JacquesTerblanche\Downloads\BadProject\ThirdParty\obj\Debug\ThirdParty.dll
-C:\Users\JacquesTerblanche\Downloads\BadProject\ThirdParty\obj\Debug\ThirdParty.pdb

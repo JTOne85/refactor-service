@@ -39,3 +39,4 @@
 /BadProject/Tests/obj/Debug/net7.0/Tests.GeneratedMSBuildEditorConfig.editorconfig
 /BadProject/ThirdParty/Properties/AssemblyInfo.cs
 *.user
+/BadProject/.vs/BadProject/v17/.suo

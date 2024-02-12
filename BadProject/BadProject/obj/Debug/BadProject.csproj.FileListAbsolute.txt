@@ -1,0 +1,10 @@
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\bin\Debug\BadProject.dll.config
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\bin\Debug\BadProject.dll
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\bin\Debug\BadProject.pdb
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\bin\Debug\ThirdParty.dll
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\bin\Debug\ThirdParty.pdb
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\obj\Debug\BadProject.csproj.AssemblyReference.cache
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\obj\Debug\BadProject.csproj.CoreCompileInputs.cache
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\obj\Debug\BadProject.csproj.CopyComplete
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\obj\Debug\BadProject.dll
+C:\Users\JacquesTerblanche\Downloads\BadProject\BadProject\obj\Debug\BadProject.pdb

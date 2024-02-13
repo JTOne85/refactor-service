@@ -15,7 +15,7 @@ namespace BadProject
         private ErrorManager _errorManager;
         private CacheManager _cacheManager;
 
-        public CacheManager CacheManager
+        public ICacheManager CacheManager
         {
             get => _cacheManager;
             set
@@ -33,7 +33,7 @@ namespace BadProject
             }
         }
 
-        public AdvProviderBuilder(CacheManager cacheManager, IErrorManager errorManager)
+        public AdvProviderBuilder(ICacheManager cacheManager, IErrorManager errorManager)
         {
             CacheManager = cacheManager;
             ErrorManager = errorManager;

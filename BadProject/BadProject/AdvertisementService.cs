@@ -25,7 +25,7 @@ namespace Adv
         // 3. If it can't retrive the data or the ErrorCount in the last hour is more than 10, 
         //    it uses the SqlDataProvider (backupProvider)
 
-        private CacheManager _cacheManager;
+        private ICacheManager _cacheManager;
         private IErrorManager _errorManager;
         private IAdvProviderBuilder _advProviderBuilder;
 

@@ -26,7 +26,7 @@ namespace TestProject1
             provider.Setup(x => x.BuildProvider(new Advertisement { WebId = "some_random_id"}, errorManager.Object)).Returns(new Advertisement());
 
 
-            cacheManager.Setup(x => x.Get("")).Returns(new ThirdParty.Advertisement());
+            cacheManager.Setup(x => x.Get("")).Returns(new ThirdParty.Advertisement { WebId = "some_random_id"});
 
             var service = new AdvertisementService(cacheManager.Object, errorManager.Object);
 

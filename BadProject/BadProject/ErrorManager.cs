@@ -7,7 +7,7 @@ namespace BadProject
     public interface IErrorManager
     {
         int ErrorCount { get; set; }
-        //Queue<DateTime> Errors;
+        Queue<DateTime> Errors { get; }
         void Enqueue(DateTime errorTimeStamp);
         DateTime Dequeue();
     }
@@ -15,6 +15,9 @@ namespace BadProject
     public abstract class ErrorManagerBase : IErrorManager
     {
         public abstract int ErrorCount { get; set; }
+
+        public Queue<DateTime> Errors { get; }
+
         public abstract void Enqueue(DateTime errorTimeStamp);
         public abstract DateTime Dequeue();
     }

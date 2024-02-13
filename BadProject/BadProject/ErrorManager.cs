@@ -3,7 +3,16 @@ using System.Collections.Generic;
 
 namespace BadProject
 {
-    public abstract class ErrorManagerBase 
+
+    public interface IErrorManager
+    {
+        int ErrorCount { get; set; }
+        //Queue<DateTime> Errors;
+        void Enqueue(DateTime errorTimeStamp);
+        DateTime Dequeue();
+    }
+
+    public abstract class ErrorManagerBase : IErrorManager
     {
         public abstract int ErrorCount { get; set; }
         public abstract void Enqueue(DateTime errorTimeStamp);

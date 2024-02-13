@@ -26,10 +26,10 @@ namespace Adv
         //    it uses the SqlDataProvider (backupProvider)
 
         private CacheManager _cacheManager;
-        private ErrorManager _errorManager;
-        private AdvProviderBuilder _advProviderBuilder;
+        private IErrorManager _errorManager;
+        private IAdvProviderBuilder _advProviderBuilder;
 
-        public AdvertisementService(CacheManager cacheManager, ErrorManager errorManager)
+        public AdvertisementService(ICacheManager cacheManager, IErrorManager errorManager)
         {
             _cacheManager = cacheManager;
             _errorManager = errorManager;

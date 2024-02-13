@@ -6,7 +6,11 @@ using ThirdParty;
 
 namespace BadProject
 {
-    public class AdvProviderBuilder
+    public interface IAdvProviderBuilder {
+        Advertisement BuildProvider(Advertisement adv, IErrorManager errorManager);
+        Advertisement CreateAdvProvider(string id, bool? useBackupProvider);
+    }
+    public class AdvProviderBuilder : IAdvProviderBuilder
     {
         private ErrorManager _errorManager;
         private CacheManager _cacheManager;
@@ -20,7 +24,7 @@ namespace BadProject
             }
         }
 
-        public ErrorManager ErrorManager
+        public IErrorManager ErrorManager
         {
             get => _errorManager;
             set
@@ -29,13 +33,13 @@ namespace BadProject
             }
         }
 
-        public AdvProviderBuilder(CacheManager cacheManager, ErrorManager errorManager)
+        public AdvProviderBuilder(CacheManager cacheManager, IErrorManager errorManager)
         {
             CacheManager = cacheManager;
             ErrorManager = errorManager;
         }
 
-        public Advertisement BuildProvider(Advertisement adv, ErrorManager errorManager)
+        public Advertisement BuildProvider(Advertisement adv, IErrorManager errorManager)
         {
             ErrorManager = errorManager;
             if ((adv == null) && (errorManager.ErrorCount < 10))
@@ -71,7 +75,7 @@ namespace BadProject
         }
 
 
-        private Advertisement CreateAdvProvider(string id, bool? useBackupProvider = false)
+        public Advertisement CreateAdvProvider(string id, bool? useBackupProvider = false)
         {
             if (useBackupProvider.Value)
             {

@@ -43,10 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvertisementService.cs" />
-    <Compile Include="AdvProviderBuilder.cs" />
-    <Compile Include="CacheManager.cs" />
-    <Compile Include="ErrorManager.cs" />
-    <Compile Include="IAdvertisementService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

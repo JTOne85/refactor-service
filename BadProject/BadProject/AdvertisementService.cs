@@ -1,13 +1,16 @@
-﻿using BadProject;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Runtime.Caching;
+using System.Threading;
 using ThirdParty;
 
 namespace Adv
 {
-    public class AdvertisementService : IAdvertisementService
+    public class AdvertisementService
     {
-        //private static MemoryCache cache = new MemoryCache("");
-        //private static Queue<DateTime> errors = new Queue<DateTime>();
+        private static MemoryCache cache = new MemoryCache("");
+        private static Queue<DateTime> errors = new Queue<DateTime>();
 
         private Object lockObj = new Object();
         // **************************************************************************************************
@@ -24,18 +27,6 @@ namespace Adv
         //
         // 3. If it can't retrive the data or the ErrorCount in the last hour is more than 10, 
         //    it uses the SqlDataProvider (backupProvider)
-
-        private ICacheManager _cacheManager;
-        private IErrorManager _errorManager;
-        private IAdvProviderBuilder _advProviderBuilder;
-
-        public AdvertisementService(ICacheManager cacheManager, IErrorManager errorManager)
-        {
-            _cacheManager = cacheManager;
-            _errorManager = errorManager;
-            _advProviderBuilder = new AdvProviderBuilder(_cacheManager, _errorManager);
-        }
-
         public Advertisement GetAdvertisement(string id)
         {
             Advertisement adv = null;
@@ -43,22 +34,59 @@ namespace Adv
             lock (lockObj)
             {
                 // Use Cache if available
-                adv = _cacheManager.Get($"AdvKey_{id}");
+                adv = (Advertisement)cache.Get($"AdvKey_{id}");
 
                 // Count HTTP error timestamps in the last hour
-                while (_errorManager.ErrorCount > 20) _errorManager.Dequeue();
-
-                _errorManager.ErrorCount = 0;
-                foreach (var dat in _errorManager.Errors)
+                while (errors.Count > 20) errors.Dequeue();
+                int errorCount = 0;
+                foreach (var dat in errors)
                 {
                     if (dat > DateTime.Now.AddHours(-1))
                     {
-                        _errorManager.ErrorCount++;
+                        errorCount++;
                     }
                 }
 
-                return _advProviderBuilder.BuildProvider(adv, _errorManager);
+
+                // If Cache is empty and ErrorCount<10 then use HTTP provider
+                if ((adv == null) && (errorCount < 10))
+                {
+                    int retry = 0;
+                    do
+                    {
+                        retry++;
+                        try
+                        {
+                            var dataProvider = new NoSqlAdvProvider();
+                            adv = dataProvider.GetAdv(id);
+                        }
+                        catch
+                        {
+                            Thread.Sleep(1000);
+                            errors.Enqueue(DateTime.Now); // Store HTTP error timestamp              
+                        }
+                    } while ((adv == null) && (retry < int.Parse(ConfigurationManager.AppSettings["RetryCount"])));
+
+
+                    if (adv != null)
+                    {
+                        cache.Set($"AdvKey_{id}", adv, DateTimeOffset.Now.AddMinutes(5));
+                    }
+                }
+
+
+                // if needed try to use Backup provider
+                if (adv == null)
+                {
+                    adv = SQLAdvProvider.GetAdv(id);
+
+                    if (adv != null)
+                    {
+                        cache.Set($"AdvKey_{id}", adv, DateTimeOffset.Now.AddMinutes(5));
+                    }
+                }
             }
+            return adv;
         }
     }
 }

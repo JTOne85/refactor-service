@@ -43,4 +43,5 @@
 *.xml
 *._
 *.nupkg
+*.tmp
 *.bin

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BadProject.Caching;
+using BadProject.Errors;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Runtime.Caching;
@@ -9,43 +11,27 @@ namespace Adv
 {
     public class AdvertisementService
     {
-        private static MemoryCache cache = new MemoryCache("");
-        private static Queue<DateTime> errors = new Queue<DateTime>();
+        private object lockObj = new object();
+        private ICacheManager _cacheManager;
+        private IErrorManager _errorManager;
+        private IAdvProviderBuilder _advProviderBuilder;
 
-        private Object lockObj = new Object();
-        // **************************************************************************************************
-        // Loads Advertisement information by id
-        // from cache or if not possible uses the "mainProvider" or if not possible uses the "backupProvider"
-        // **************************************************************************************************
-        // Detailed Logic:
-        // 
-        // 1. Tries to use cache (and retuns the data or goes to STEP2)
-        //
-        // 2. If the cache is empty it uses the NoSqlDataProvider (mainProvider), 
-        //    in case of an error it retries it as many times as needed based on AppSettings
-        //    (returns the data if possible or goes to STEP3)
-        //
-        // 3. If it can't retrive the data or the ErrorCount in the last hour is more than 10, 
-        //    it uses the SqlDataProvider (backupProvider)
+        public AdvertisementService(ICacheManager cacheManager, IErrorManager errorManager)
+        {
+            _cacheManager = cacheManager;
+            _errorManager = errorManager;
+            _advProviderBuilder = new AdvProviderBuilder(_cacheManager, _errorManager);
+        }
+
         public Advertisement GetAdvertisement(string id)
         {
             Advertisement adv = null;
 
             lock (lockObj)
             {
-                // Use Cache if available
-                adv = (Advertisement)cache.Get($"AdvKey_{id}");
+                adv = _cacheManager.Get($"AdvKey_{id}");
 
-                // Count HTTP error timestamps in the last hour
-                while (errors.Count > 20) errors.Dequeue();
-                int errorCount = 0;
-                foreach (var dat in errors)
-                {
-                    if (dat > DateTime.Now.AddHours(-1))
-                    {
-                        errorCount++;
-                    }
-                }
+                while (_errorManager.ErrorCount > 20) _errorManager.Dequeue();
 
 
                 // If Cache is empty and ErrorCount<10 then use HTTP provider

@@ -43,3 +43,4 @@
 *.xml
 *._
 *.nupkg
+*.tmp

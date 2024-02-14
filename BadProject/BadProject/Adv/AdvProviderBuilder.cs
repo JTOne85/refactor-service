@@ -1,15 +1,13 @@
-﻿using Adv;
+﻿using BadProject.Caching;
+using BadProject.Errors;
 using System;
 using System.Configuration;
 using System.Threading;
 using ThirdParty;
 
-namespace BadProject
+namespace Adv
 {
-    public interface IAdvProviderBuilder {
-        Advertisement BuildProvider(Advertisement adv, IErrorManager errorManager);
-        Advertisement CreateAdvProvider(string id, bool? useBackupProvider);
-    }
+
     public class AdvProviderBuilder : IAdvProviderBuilder
     {
         private ErrorManager _errorManager;
@@ -42,7 +40,7 @@ namespace BadProject
         public Advertisement BuildProvider(Advertisement adv, IErrorManager errorManager)
         {
             ErrorManager = errorManager;
-            if ((adv == null) && (errorManager.ErrorCount < 10))
+            if (adv == null && errorManager.ErrorCount < 10)
             {
                 int retry = 0;
                 do
@@ -57,10 +55,9 @@ namespace BadProject
                         Thread.Sleep(1000);
                         EnqueueError(DateTime.Now);
                     }
-                } while ((adv == null) && (retry < int.Parse(ConfigurationManager.AppSettings["RetryCount"])));
+                } while (adv == null && retry < int.Parse(ConfigurationManager.AppSettings["RetryCount"]));
             }
 
-            // if needed try to use Backup provider
             if (adv == null)
             {
                 adv = CreateAdvProvider(adv.WebId, true);

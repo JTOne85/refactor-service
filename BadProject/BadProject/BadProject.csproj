@@ -42,11 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvertisementService.cs" />
-    <Compile Include="AdvProviderBuilder.cs" />
-    <Compile Include="CacheManager.cs" />
-    <Compile Include="ErrorManager.cs" />
-    <Compile Include="IAdvertisementService.cs" />
+    <Compile Include="Adv\AdvertisementService.cs" />
+    <Compile Include="Adv\AdvProviderBuilder.cs" />
+    <Compile Include="Caching\CacheManager.cs" />
+    <Compile Include="Caching\CacheManagerBase.cs" />
+    <Compile Include="Errors\ErrorManager.cs" />
+    <Compile Include="Errors\ErrorManagerBase.cs" />
+    <Compile Include="Adv\IAdvertisementService.cs" />
+    <Compile Include="Adv\IAdvProviderBuilder.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Errors\IErrorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
